@@ -8,19 +8,20 @@ import org.example.view.View;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.HashMap;
+import static org.example.model.shape_factories.ShapeType.*;
 
 public class Controller implements ActionListener, MouseListener, MouseMotionListener {
 
     private View view;
     private Model model = new Model(this);
     private boolean shapeIsBeingCreated = false;
-    private HashMap<String, ShapeFactory> shapeFactories = new HashMap<>() {{
-       put("Point", new PointFactory());
-       put("Line", new LineFactory());
-       put("Rectangle", new RectangleFactory());
-       put("Ellipse", new EllipseFactory());
-       put("LineOO", new LineOOFactory());
-       put("Cube", new CubeFactory());
+    private HashMap<String, ShapeType> shapeTypes = new HashMap<>() {{
+       put("Point", POINT);
+       put("Line", LINE);
+       put("Rectangle", RECTANGLE);
+       put("Ellipse", ELLIPSE);
+       put("LineOO", LINEOO);
+       put("Cube", CUBE);
     }};
 
     public Controller(View view) {
@@ -36,8 +37,8 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
         else if (e.getSource() instanceof JRadioButtonMenuItem)
             objectName = e.getActionCommand();
 
-        var shapeFactory = shapeFactories.get(objectName);
-        model.setShapeFactory(shapeFactory);
+        var shapeType = shapeTypes.get(objectName);
+        model.setCurrentShapeType(shapeType);
         view.setTitle(objectName);
         view.updateSelectedObject();
     }
