@@ -22,6 +22,14 @@ public abstract class Shape extends JComponent {
             draw(g2d);
     }
 
+    public Point getStartPoint() {
+        return startPoint;
+    }
+
+    public Point getEndPoint() {
+        return endPoint;
+    }
+
     public void setEndPoint(Point endPoint) {
         this.endPoint = endPoint;
         recalculate();

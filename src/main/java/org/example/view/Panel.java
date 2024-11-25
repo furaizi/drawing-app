@@ -16,11 +16,8 @@ public class Panel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        for (var shape : view.getController().getShapes()) {
-            if (shape == null)
-                continue;
-
-            shape.paintComponent(g);
-        }
+        view.getController()
+                .getShapes()
+                .forEach(shape -> shape.paintComponent(g));
     }
 }

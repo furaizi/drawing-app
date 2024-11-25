@@ -9,9 +9,10 @@ import java.awt.*;
 public class View extends JFrame {
 
     private Controller controller = new Controller(this);
-    private org.example.view.menu.MenuBar menuBar = new MenuBar(this);
-    private org.example.view.Panel panel = new Panel(this);
+    private MenuBar menuBar = new MenuBar(this);
+    private Panel panel = new Panel(this);
     private ToolBar toolBar = new ToolBar(this);
+    private Table table = new Table(this);
 
     public View() throws HeadlessException {
         initGUI();
@@ -25,6 +26,14 @@ public class View extends JFrame {
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public void showTable() {
+        table.setVisible(true);
+    }
+
+    public void updateTable() {
+        table.update();
     }
 
     public void updateSelectedObject() {

@@ -8,6 +8,8 @@ import org.example.view.View;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.HashMap;
+import java.util.List;
+
 import static org.example.model.shape_factories.ShapeType.*;
 
 public class Controller implements ActionListener, MouseListener, MouseMotionListener {
@@ -86,9 +88,10 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
     public void update() {
         view.revalidate();
         view.repaint();
+        view.updateTable();
     }
 
-    public Shape[] getShapes() {
+    public List<Shape> getShapes() {
         return model.getShapes();
     }
 

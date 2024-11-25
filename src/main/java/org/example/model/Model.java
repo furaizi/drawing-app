@@ -7,6 +7,8 @@ import org.example.model.shape_factories.ShapeType;
 import org.example.model.shapes.Shape;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Model {
 
@@ -16,21 +18,21 @@ public class Model {
     private ShapeFactory shapeFactory = new ShapeFactory();
     private Shape currentShape;
     private ShapeType currentShapeType;
-    private Shape[] shapes = new Shape[100 + NUMBER_IN_JOURNAL];
+    private List<Shape> shapes = new ArrayList<>();
     private int currentIndex = 0;
 
     public Model(Controller controller) {
         this.controller = controller;
     }
 
-    public Shape[] getShapes() {
+    public List<Shape> getShapes() {
         return shapes;
     }
 
     public void createShape(Point startPoint, Point endPoint) {
         var shape = shapeFactory.create(currentShapeType, startPoint, endPoint);
         this.currentShape = shape;
-        shapes[currentIndex++] = shape;
+        shapes.add(shape);
         controller.update();
     }
 

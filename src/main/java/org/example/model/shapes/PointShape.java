@@ -19,7 +19,7 @@ public class PointShape extends Shape implements IPointShape {
     @Override
     public void drawPoint(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillOval(startPoint.x - SIZE/2, startPoint.y - SIZE/2, SIZE, SIZE);
+        g.fillOval(endPoint.x - SIZE/2, endPoint.y - SIZE/2, SIZE, SIZE);
     }
     @Override
     protected void draw(Graphics2D g2d) {}
