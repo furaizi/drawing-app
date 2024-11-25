@@ -25,5 +25,7 @@ public class PointShape extends Shape implements IPointShape {
     protected void draw(Graphics2D g2d) {}
 
     @Override
-    protected void recalculate() {}
+    protected void recalculate() {
+        startPoint = endPoint;
+    }
 }

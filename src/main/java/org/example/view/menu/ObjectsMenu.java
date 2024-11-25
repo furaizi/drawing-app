@@ -1,5 +1,6 @@
 package org.example.view.menu;
 
+import org.example.controller.Controller;
 import org.example.view.View;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class ObjectsMenu extends JMenu {
         var menuItem = new JRadioButtonMenuItem(name);
         buttonGroup.add(menuItem);
         add(menuItem);
-        menuItem.addActionListener(view.getController());
+        menuItem.addActionListener(Controller.getInstance());
     }
 
 }

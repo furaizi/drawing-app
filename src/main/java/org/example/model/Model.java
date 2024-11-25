@@ -12,18 +12,13 @@ import java.util.List;
 
 public class Model {
 
-    private static final int NUMBER_IN_JOURNAL = 19 + 1;
-
-    private Controller controller;
     private ShapeFactory shapeFactory = new ShapeFactory();
     private Shape currentShape;
     private ShapeType currentShapeType;
     private List<Shape> shapes = new ArrayList<>();
     private int currentIndex = 0;
 
-    public Model(Controller controller) {
-        this.controller = controller;
-    }
+    public Model() {}
 
     public List<Shape> getShapes() {
         return shapes;
@@ -33,12 +28,12 @@ public class Model {
         var shape = shapeFactory.create(currentShapeType, startPoint, endPoint);
         this.currentShape = shape;
         shapes.add(shape);
-        controller.update();
+        Controller.getInstance().update();
     }
 
     public void updateCurrentShape(Point endPoint) {
         currentShape.setEndPoint(endPoint);
-        controller.update();
+        Controller.getInstance().update();
     }
 
     public void setCurrentShapeAsCreated() {

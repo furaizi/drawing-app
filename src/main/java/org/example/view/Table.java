@@ -1,5 +1,6 @@
 package org.example.view;
 
+import org.example.controller.Controller;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class Table extends JDialog {
     public Table(View view) {
         super(view, "Data table", false);
         this.view = view;
-        this.shapes = view.getController().getShapes();
+        this.shapes = Controller.getInstance().getShapes();
         setLocationRelativeTo(view);
         setSize(400, 300);
 

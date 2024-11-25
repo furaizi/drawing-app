@@ -8,7 +8,6 @@ import java.awt.*;
 
 public class View extends JFrame {
 
-    private Controller controller = new Controller(this);
     private MenuBar menuBar = new MenuBar(this);
     private Panel panel = new Panel(this);
     private ToolBar toolBar = new ToolBar(this);
@@ -19,6 +18,7 @@ public class View extends JFrame {
     }
 
     private void initGUI() {
+        Controller.getInstance().setView(this);
         setJMenuBar(menuBar);
         add(panel, BorderLayout.CENTER);
         add(toolBar, BorderLayout.NORTH);
@@ -41,7 +41,7 @@ public class View extends JFrame {
         toolBar.update(getTitle());
     }
 
-    public Controller getController() {
-        return controller;
-    }
+//    public Controller getController() {
+//        return controller;
+//    }
 }

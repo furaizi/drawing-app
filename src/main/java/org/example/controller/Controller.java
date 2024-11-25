@@ -14,8 +14,10 @@ import static org.example.model.shape_factories.ShapeType.*;
 
 public class Controller implements ActionListener, MouseListener, MouseMotionListener {
 
+    private static Controller INSTANCE;
+
     private View view;
-    private Model model = new Model(this);
+    private Model model = new Model();
     private boolean shapeIsBeingCreated = false;
     private HashMap<String, ShapeType> shapeTypes = new HashMap<>() {{
        put("Point", POINT);
@@ -26,7 +28,16 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
        put("Cube", CUBE);
     }};
 
-    public Controller(View view) {
+    private Controller() {}
+
+    public static Controller getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new Controller();
+
+        return INSTANCE;
+    }
+
+    public void setView(View view) {
         this.view = view;
     }
 

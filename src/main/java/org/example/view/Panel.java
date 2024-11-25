@@ -1,5 +1,7 @@
 package org.example.view;
 
+import org.example.controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,13 +12,13 @@ public class Panel extends JPanel {
     public Panel(View view) {
         super(new BorderLayout());
         this.view = view;
-        addMouseListener(view.getController());
-        addMouseMotionListener(view.getController());
+        addMouseListener(Controller.getInstance());
+        addMouseMotionListener(Controller.getInstance());
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        view.getController()
+        Controller.getInstance()
                 .getShapes()
                 .forEach(shape -> shape.paintComponent(g));
     }
