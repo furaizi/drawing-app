@@ -30,7 +30,7 @@ public class LineOO extends Shape implements ILine, IEllipse {
         g2d.setColor(Color.WHITE);
         g2d.fill(new Ellipse2D.Double(startPoint.x - RADIUS, startPoint.y - RADIUS, DIAMETER, DIAMETER));
         g2d.fill(new Ellipse2D.Double(endPoint.x - RADIUS, endPoint.y - RADIUS, DIAMETER, DIAMETER));
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(contourColor);
         g2d.draw(new Ellipse2D.Double(startPoint.x - RADIUS, startPoint.y - RADIUS, DIAMETER, DIAMETER));
         g2d.draw(new Ellipse2D.Double(endPoint.x - RADIUS, endPoint.y - RADIUS, DIAMETER, DIAMETER));
 
@@ -38,7 +38,7 @@ public class LineOO extends Shape implements ILine, IEllipse {
 
     @Override
     public void drawLine(Graphics2D g2d) {
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(contourColor);
         g2d.draw(new Line2D.Double(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
     }
 }

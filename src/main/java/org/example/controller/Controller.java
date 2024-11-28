@@ -6,13 +6,17 @@ import org.example.model.shapes.Shape;
 import org.example.view.View;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.example.model.shape_factories.ShapeType.*;
 
-public class Controller implements ActionListener, MouseListener, MouseMotionListener {
+public class Controller implements ActionListener, MouseListener, MouseMotionListener, ListSelectionListener {
 
     private static Controller INSTANCE;
 
@@ -71,7 +75,7 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
         if (!shapeIsBeingCreated)
             return;
 
-        model.updateCurrentShape(e.getPoint());
+        model.updateCurrentShapeEndpoint(e.getPoint());
         model.setCurrentShapeAsCreated();
         shapeIsBeingCreated = false;
     }
@@ -85,7 +89,7 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
     @Override
     public void mouseDragged(MouseEvent e) {
         if (shapeIsBeingCreated)
-            model.updateCurrentShape(e.getPoint());
+            model.updateCurrentShapeEndpoint(e.getPoint());
         else {
             model.createShape(e.getPoint(), e.getPoint());
             shapeIsBeingCreated = true;
@@ -95,6 +99,20 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
 
     @Override
     public void mouseMoved(MouseEvent e) {}
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting())
+            return;
+
+        var selectionModel = (DefaultListSelectionModel) e.getSource();
+        var selectedIndexes = IntStream.range(0, model.getShapes().size())
+                .filter(selectionModel::isSelectedIndex)
+                .boxed()
+                .toList();
+
+        model.updateSelectedStatus(selectedIndexes);
+    }
 
     public void update() {
         view.revalidate();

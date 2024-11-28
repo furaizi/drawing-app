@@ -9,6 +9,7 @@ import org.example.model.shapes.Shape;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Model {
 
@@ -16,7 +17,6 @@ public class Model {
     private Shape currentShape;
     private ShapeType currentShapeType;
     private List<Shape> shapes = new ArrayList<>();
-    private int currentIndex = 0;
 
     public Model() {}
 
@@ -31,8 +31,22 @@ public class Model {
         Controller.getInstance().update();
     }
 
-    public void updateCurrentShape(Point endPoint) {
+    public void updateCurrentShapeEndpoint(Point endPoint) {
         currentShape.setEndPoint(endPoint);
+        Controller.getInstance().update();
+    }
+
+    public void updateSelectedStatus(List<Integer> selectedIndexes) {
+//        shapes.forEach(shape -> shape.setSelected(false));
+//        shapes.get(shapeIndex).setSelected(true);
+//        Controller.getInstance().update();
+
+        // Устанавливаем выделение только для указанных индексов
+        IntStream.range(0, shapes.size()).forEach(i -> {
+            shapes.get(i).setSelected(selectedIndexes.contains(i));
+        });
+
+        // Обновляем состояние приложения
         Controller.getInstance().update();
     }
 

@@ -18,7 +18,7 @@ public class Line extends Shape implements ILine {
 
     @Override
     public void drawLine(Graphics2D g2d) {
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(contourColor);
         g2d.draw(new Line2D.Double(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
     }
 

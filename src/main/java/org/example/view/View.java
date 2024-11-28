@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.controller.Controller;
 import org.example.view.menu.MenuBar;
+import org.example.view.table.TableDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,7 @@ public class View extends JFrame {
     private MenuBar menuBar = new MenuBar(this);
     private Panel panel = new Panel(this);
     private ToolBar toolBar = new ToolBar(this);
-    private Table table = new Table(this);
+    private TableDialog tableDialog = new TableDialog(this);
 
     public View() throws HeadlessException {
         initGUI();
@@ -29,11 +30,11 @@ public class View extends JFrame {
     }
 
     public void showTable() {
-        table.setVisible(true);
+        tableDialog.setVisible(true);
     }
 
     public void updateTable() {
-        table.update();
+        tableDialog.update();
     }
 
     public void updateSelectedObject() {
@@ -41,7 +42,4 @@ public class View extends JFrame {
         toolBar.update(getTitle());
     }
 
-//    public Controller getController() {
-//        return controller;
-//    }
 }

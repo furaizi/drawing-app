@@ -8,7 +8,6 @@ import java.awt.geom.Rectangle2D;
 
 public class Cube extends Shape implements IRectangle, ILine {
 
-    private final static Color CONTOUR_COLOR = Color.BLACK;
     private int rectX, rectY, width, height, xShift, yShift;
 
     public Cube(Point startPoint, Point endPoint) {
@@ -23,7 +22,7 @@ public class Cube extends Shape implements IRectangle, ILine {
 
     @Override
     public void drawLine(Graphics2D g2d) {
-        g2d.setColor(CONTOUR_COLOR);
+        g2d.setColor(contourColor);
         g2d.drawLine(startPoint.x, startPoint.y, startPoint.x + xShift, startPoint.y - yShift);
         g2d.drawLine(startPoint.x, endPoint.y, startPoint.x + xShift, endPoint.y - yShift);
         g2d.drawLine(endPoint.x, endPoint.y, endPoint.x + xShift, endPoint.y - yShift);
@@ -32,7 +31,7 @@ public class Cube extends Shape implements IRectangle, ILine {
 
     @Override
     public void drawRect(Graphics2D g2d) {
-        g2d.setColor(CONTOUR_COLOR);
+        g2d.setColor(contourColor);
         g2d.draw(new Rectangle2D.Double(rectX, rectY, width, height));
         g2d.draw(new Rectangle2D.Double(rectX + xShift, rectY - yShift, width, height));
     }

@@ -24,7 +24,7 @@ public class Ellipse extends Shape implements IEllipse {
 
     @Override
     public void drawEllipse(Graphics2D g2d) {
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(contourColor);
         g2d.draw(new Ellipse2D.Double(ellipseX, ellipseY, 2 * halfWidth, 2 * halfHeight));
     }
 

@@ -22,7 +22,7 @@ public class Rectangle extends Shape implements IRectangle {
     public void drawRect(Graphics2D g2d) {
         g2d.setColor(Color.WHITE);
         g2d.fill(new Rectangle2D.Double(rectX, rectY, width, height));
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(contourColor);
         g2d.draw(new Rectangle2D.Double(rectX, rectY, width, height));
     }
 
