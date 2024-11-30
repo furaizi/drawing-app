@@ -9,6 +9,7 @@ import org.example.model.shapes.Shape;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Model {
@@ -22,6 +23,12 @@ public class Model {
 
     public List<Shape> getShapes() {
         return shapes;
+    }
+
+    public String getStringRepresentation() {
+        return shapes.stream()
+                .map(Shape::toString)
+                .collect(Collectors.joining("\n"));
     }
 
     public void createShape(Point startPoint, Point endPoint) {

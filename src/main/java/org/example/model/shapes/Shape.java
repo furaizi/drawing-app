@@ -58,4 +58,9 @@ public abstract class Shape extends JComponent {
         g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10, dashPattern, 0));
         g2d.setColor(contourColor);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s{x1=%d, y1=%d, x2=%d, y2=%d}", getClass().getSimpleName(), startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+    }
 }

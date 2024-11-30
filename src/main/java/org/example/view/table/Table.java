@@ -12,7 +12,6 @@ public class Table extends JTable {
 
     private static final String[] COLUMN_NAMES = {"Type", "x1", "y1", "x2", "y2"};
     private List<Shape> shapes = Controller.getInstance().getShapes();
-    private Shape lastSavedShape;
     private static DefaultTableModel tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {

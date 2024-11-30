@@ -8,7 +8,12 @@ import org.example.view.View;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,13 +56,38 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
         if (e.getSource() instanceof JToggleButton button) {
             objectName = button.getToolTipText();
         }
-        else if (e.getSource() instanceof JRadioButtonMenuItem)
+        else if (e.getSource() instanceof JRadioButtonMenuItem || e.getSource() instanceof JMenuItem)
             objectName = e.getActionCommand();
 
-        var shapeType = shapeTypes.get(objectName);
-        model.setCurrentShapeType(shapeType);
-        view.setTitle(objectName);
-        view.updateSelectedObject();
+        if (objectName.equals("Save As")) {
+            var fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Сохранить таблицу");
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
+
+            int userSelection = fileChooser.showSaveDialog(view);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                if (!fileToSave.getName().endsWith(".txt")) {
+                    fileToSave = new File(fileToSave.getAbsolutePath() + ".txt");
+                }
+
+                try {
+                    var table = model.getStringRepresentation();
+                    Files.writeString(Paths.get(fileToSave.getAbsolutePath()), table);
+                    JOptionPane.showMessageDialog(view, "Файл успешно сохранен!", "Успех", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(view, "Ошибка при сохранении файла: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+
+        }
+        else {
+            var shapeType = shapeTypes.get(objectName);
+            model.setCurrentShapeType(shapeType);
+            view.setTitle(objectName);
+            view.updateSelectedObject();
+        }
     }
 
     @Override
