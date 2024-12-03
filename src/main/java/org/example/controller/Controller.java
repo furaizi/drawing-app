@@ -22,21 +22,13 @@ import java.util.stream.Stream;
 
 import static org.example.model.shape_factories.ShapeType.*;
 
-public class Controller implements ActionListener, MouseListener, MouseMotionListener, ListSelectionListener, KeyListener {
+public class Controller implements ActionListener, MouseListener, MouseMotionListener, ListSelectionListener {
 
     private static Controller INSTANCE;
 
     private View view;
     private Model model = new Model();
     private boolean shapeIsBeingCreated = false;
-    private HashMap<String, ShapeType> shapeTypes = new HashMap<>() {{
-       put("Point", POINT);
-       put("Line", LINE);
-       put("Rectangle", RECTANGLE);
-       put("Ellipse", ELLIPSE);
-       put("LineOO", LINEOO);
-       put("Cube", CUBE);
-    }};
 
     private Controller() {}
 
@@ -84,7 +76,8 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
 
         }
         else {
-            var shapeType = shapeTypes.get(objectName);
+            var shapeType = ShapeType.fromName(objectName)
+                            .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"));
             model.setCurrentShapeType(shapeType);
             view.setTitle(objectName);
             view.updateSelectedObject();
@@ -145,41 +138,27 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
         model.updateSelectedStatus(selectedIndexes);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
+    public void handleDeleteKey() {
+        var table = view.getTable();
+        var selectedRows = IntStream.of(table.getSelectedRows())
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .toList();
 
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getSource() instanceof Table table && e.getKeyCode() == KeyEvent.VK_DELETE) {
-            var selectedRows = IntStream.of(table.getSelectedRows())
-                    .boxed()
-                    .sorted(Comparator.reverseOrder())
-                    .toList();
-
-            if (!selectedRows.isEmpty()) {
-                int confirm = JOptionPane.showConfirmDialog(
-                        table,
-                        "Удалить выбранные строки?",
-                        "Подтверждение",
-                        JOptionPane.YES_NO_OPTION
-                );
-                if (confirm == JOptionPane.YES_OPTION) {
-                    selectedRows.forEach(index -> {
-                        getShapes().remove(index.intValue());
-                    });
-
-                }
-            }
-
+        if (!selectedRows.isEmpty() && confirmDelete()) {
+            selectedRows.forEach(index -> model.getShapes().remove(index.intValue()));
+            update();
         }
+    }
 
-        update();
+    private boolean confirmDelete() {
+        return JOptionPane.showConfirmDialog(
+                view,
+                "Удалить выбранные строки?",
+                "Подтверждение",
+                JOptionPane.YES_NO_OPTION
+        ) == JOptionPane.YES_OPTION;
     }
 
     public void update() {

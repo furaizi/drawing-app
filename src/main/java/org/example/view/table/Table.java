@@ -1,6 +1,7 @@
 package org.example.view.table;
 
 import org.example.controller.Controller;
+import org.example.controller.listeners.DeleteKeyListener;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class Table extends JTable {
     public Table() {
         super(tableModel);
         getSelectionModel().addListSelectionListener(Controller.getInstance());
-        addKeyListener(Controller.getInstance());
+        addKeyListener(new DeleteKeyListener());
     }
 
     public void update() {

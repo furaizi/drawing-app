@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.controller.Controller;
 import org.example.view.menu.MenuBar;
+import org.example.view.table.Table;
 import org.example.view.table.TableDialog;
 
 import javax.swing.*;
@@ -42,4 +43,7 @@ public class View extends JFrame {
         toolBar.update(getTitle());
     }
 
+    public Table getTable() {
+        return tableDialog.getTable();
+    }
 }

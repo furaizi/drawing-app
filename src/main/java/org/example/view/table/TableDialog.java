@@ -24,4 +24,8 @@ public class TableDialog extends JDialog {
     public void update() {
         table.update();
     }
+
+    public Table getTable() {
+        return table;
+    }
 }
