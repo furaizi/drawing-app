@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import static org.example.model.shape_factories.ShapeType.*;
 
-public class Controller implements ActionListener, MouseListener, MouseMotionListener, ListSelectionListener {
+public class Controller implements ActionListener, ListSelectionListener {
 
     private static Controller INSTANCE;
 
@@ -85,46 +85,6 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        model.createShape(e.getPoint(), e.getPoint());
-        model.setCurrentShapeAsCreated();
-        shapeIsBeingCreated = false;
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (!shapeIsBeingCreated)
-            return;
-
-        model.updateCurrentShapeEndpoint(e.getPoint());
-        model.setCurrentShapeAsCreated();
-        shapeIsBeingCreated = false;
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        if (shapeIsBeingCreated)
-            model.updateCurrentShapeEndpoint(e.getPoint());
-        else {
-            model.createShape(e.getPoint(), e.getPoint());
-            shapeIsBeingCreated = true;
-        }
-
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {}
-
-    @Override
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting())
             return;
@@ -136,6 +96,30 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
                 .toList();
 
         model.updateSelectedStatus(selectedIndexes);
+    }
+
+    public void handleMouseClick(MouseEvent e) {
+        model.createShape(e.getPoint(), e.getPoint());
+        model.setCurrentShapeAsCreated();
+        shapeIsBeingCreated = false;
+    }
+
+    public void handleMouseRelease(MouseEvent e) {
+        if (!shapeIsBeingCreated)
+            return;
+
+        model.updateCurrentShapeEndpoint(e.getPoint());
+        model.setCurrentShapeAsCreated();
+        shapeIsBeingCreated = false;
+    }
+
+    public void handleMouseDrag(MouseEvent e) {
+        if (shapeIsBeingCreated)
+            model.updateCurrentShapeEndpoint(e.getPoint());
+        else {
+            model.createShape(e.getPoint(), e.getPoint());
+            shapeIsBeingCreated = true;
+        }
     }
 
 
