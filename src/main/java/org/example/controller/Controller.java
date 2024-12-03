@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import static org.example.model.shape_factories.ShapeType.*;
 
-public class Controller implements ActionListener, ListSelectionListener {
+public class Controller implements ListSelectionListener {
 
     private static Controller INSTANCE;
 
@@ -44,47 +44,6 @@ public class Controller implements ActionListener, ListSelectionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        String objectName = "";
-        if (e.getSource() instanceof JToggleButton button) {
-            objectName = button.getToolTipText();
-        }
-        else if (e.getSource() instanceof JRadioButtonMenuItem || e.getSource() instanceof JMenuItem)
-            objectName = e.getActionCommand();
-
-        if (objectName.equals("Save As")) {
-            var fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Сохранить таблицу");
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
-
-            int userSelection = fileChooser.showSaveDialog(view);
-            if (userSelection == JFileChooser.APPROVE_OPTION) {
-                File fileToSave = fileChooser.getSelectedFile();
-                if (!fileToSave.getName().endsWith(".txt")) {
-                    fileToSave = new File(fileToSave.getAbsolutePath() + ".txt");
-                }
-
-                try {
-                    var table = model.getStringRepresentation();
-                    Files.writeString(Paths.get(fileToSave.getAbsolutePath()), table);
-                    JOptionPane.showMessageDialog(view, "Файл успешно сохранен!", "Успех", JOptionPane.INFORMATION_MESSAGE);
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(view, "Ошибка при сохранении файла: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-
-
-        }
-        else {
-            var shapeType = ShapeType.fromName(objectName)
-                            .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"));
-            model.setCurrentShapeType(shapeType);
-            view.setTitle(objectName);
-            view.updateSelectedObject();
-        }
-    }
-
-    @Override
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting())
             return;
@@ -96,6 +55,44 @@ public class Controller implements ActionListener, ListSelectionListener {
                 .toList();
 
         model.updateSelectedStatus(selectedIndexes);
+    }
+
+    public void handleObjectsMenuAction(ActionEvent e) {
+        var objectName = e.getActionCommand();
+        updateShapeType(objectName);
+    }
+
+    public void handleToolBarAction(ActionEvent e) {
+        var toggleButton = (JToggleButton) e.getSource();
+        var objectName = toggleButton.getToolTipText();
+        updateShapeType(objectName);
+    }
+
+    public void handleSaveAsAction(ActionEvent e) {
+        var fileChooser = FileManager.getFileChooser();
+        int userSelection = fileChooser.showSaveDialog(view);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try {
+                FileManager.saveToFile(model.getStringRepresentation(), fileChooser.getSelectedFile());
+                JOptionPane.showMessageDialog(view,
+                        "The file was saved successfully",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(view,
+                        "Error while saving the file: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void updateShapeType(String objectName) {
+        var shapeType = ShapeType.fromName(objectName)
+                .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"));
+        model.setCurrentShapeType(shapeType);
+        view.setTitle(objectName);
+        view.updateSelectedObject();
     }
 
     public void handleMouseClick(MouseEvent e) {

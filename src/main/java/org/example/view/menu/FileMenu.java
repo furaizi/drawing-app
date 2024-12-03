@@ -1,6 +1,8 @@
 package org.example.view.menu;
 
 import org.example.controller.Controller;
+import org.example.controller.listeners.FileMenuActionListener;
+import org.example.controller.listeners.ObjectsMenuActionListener;
 
 import javax.swing.*;
 import java.util.List;
@@ -13,6 +15,6 @@ public class FileMenu extends JMenu {
         buttonNames.stream()
                 .map(JMenuItem::new)
                 .map(this::add)
-                .forEach(item -> item.addActionListener(Controller.getInstance()));
+                .forEach(item -> item.addActionListener(new FileMenuActionListener()));
     }
 }

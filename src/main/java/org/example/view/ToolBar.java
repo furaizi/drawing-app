@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.controller.Controller;
+import org.example.controller.listeners.ToolBarActionListener;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class ToolBar extends JToolBar {
 
         button.setToolTipText(name);
         button.setFocusPainted(false);
-        button.addActionListener(Controller.getInstance());
+        button.addActionListener(new ToolBarActionListener());
 
         buttonGroup.add(button);
         add(button);
