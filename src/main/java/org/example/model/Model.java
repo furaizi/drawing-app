@@ -1,7 +1,5 @@
 package org.example.model;
 
-import org.example.controller.Controller;
-
 import org.example.model.shape_factories.ShapeFactory;
 import org.example.model.shape_factories.ShapeType;
 import org.example.model.shapes.Shape;
@@ -13,13 +11,42 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Model {
-
-    private ShapeFactory shapeFactory = new ShapeFactory();
+    private final List<ModelObserver> observers = new ArrayList<>();
+    private final List<Shape> shapes = new ArrayList<>();
+    private final ShapeFactory shapeFactory = new ShapeFactory();
     private Shape currentShape;
     private ShapeType currentShapeType;
-    private List<Shape> shapes = new ArrayList<>();
 
-    public Model() {}
+    public void addObserver(ModelObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        observers.forEach(ModelObserver::modelUpdated);
+    }
+
+    public void createShape(Point startPoint, Point endPoint) {
+        currentShape = shapeFactory.create(currentShapeType, startPoint, endPoint);
+        shapes.add(currentShape);
+        notifyObservers();
+    }
+
+    public void updateCurrentShapeEndpoint(Point endPoint) {
+        currentShape.setEndPoint(endPoint);
+        notifyObservers();
+    }
+
+    public void updateSelectedStatus(List<Integer> selectedIndexes) {
+        IntStream.range(0, shapes.size()).forEach(i ->
+                shapes.get(i).setSelected(selectedIndexes.contains(i))
+        );
+        notifyObservers();
+    }
+
+    public void setCurrentShapeAsCreated() {
+        currentShape.setBeingCreated(false);
+        notifyObservers();
+    }
 
     public List<Shape> getShapes() {
         return shapes;
@@ -31,37 +58,8 @@ public class Model {
                 .collect(Collectors.joining("\n"));
     }
 
-    public void createShape(Point startPoint, Point endPoint) {
-        var shape = shapeFactory.create(currentShapeType, startPoint, endPoint);
-        this.currentShape = shape;
-        shapes.add(shape);
-        Controller.getInstance().update();
-    }
-
-    public void updateCurrentShapeEndpoint(Point endPoint) {
-        currentShape.setEndPoint(endPoint);
-        Controller.getInstance().update();
-    }
-
-    public void updateSelectedStatus(List<Integer> selectedIndexes) {
-//        shapes.forEach(shape -> shape.setSelected(false));
-//        shapes.get(shapeIndex).setSelected(true);
-//        Controller.getInstance().update();
-
-        // Устанавливаем выделение только для указанных индексов
-        IntStream.range(0, shapes.size()).forEach(i -> {
-            shapes.get(i).setSelected(selectedIndexes.contains(i));
-        });
-
-        // Обновляем состояние приложения
-        Controller.getInstance().update();
-    }
-
-    public void setCurrentShapeAsCreated() {
-        currentShape.setBeingCreated(false);
-    }
-
     public void setCurrentShapeType(ShapeType currentShapeType) {
         this.currentShapeType = currentShapeType;
     }
 }
+

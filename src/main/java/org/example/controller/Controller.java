@@ -30,11 +30,14 @@ public class Controller implements ListSelectionListener {
     private Model model = new Model();
     private boolean shapeIsBeingCreated = false;
 
-    private Controller() {}
+    private Controller() {
+        model.addObserver(this::update);
+    }
 
     public static Controller getInstance() {
-        if (INSTANCE == null)
+        if (INSTANCE == null) {
             INSTANCE = new Controller();
+        }
 
         return INSTANCE;
     }
@@ -87,14 +90,6 @@ public class Controller implements ListSelectionListener {
         }
     }
 
-    private void updateShapeType(String objectName) {
-        var shapeType = ShapeType.fromName(objectName)
-                .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"));
-        model.setCurrentShapeType(shapeType);
-        view.setTitle(objectName);
-        view.updateSelectedObject();
-    }
-
     public void handleMouseClick(MouseEvent e) {
         model.createShape(e.getPoint(), e.getPoint());
         model.setCurrentShapeAsCreated();
@@ -133,15 +128,6 @@ public class Controller implements ListSelectionListener {
         }
     }
 
-    private boolean confirmDelete() {
-        return JOptionPane.showConfirmDialog(
-                view,
-                "Удалить выбранные строки?",
-                "Подтверждение",
-                JOptionPane.YES_NO_OPTION
-        ) == JOptionPane.YES_OPTION;
-    }
-
     public void update() {
         view.revalidate();
         view.repaint();
@@ -150,6 +136,23 @@ public class Controller implements ListSelectionListener {
 
     public List<Shape> getShapes() {
         return model.getShapes();
+    }
+
+    private void updateShapeType(String objectName) {
+        var shapeType = ShapeType.fromName(objectName)
+                .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"));
+        model.setCurrentShapeType(shapeType);
+        view.setTitle(objectName);
+        view.updateSelectedObject();
+    }
+
+    private boolean confirmDelete() {
+        return JOptionPane.showConfirmDialog(
+                view,
+                "Delete chosen rows?",
+                "Confirmation",
+                JOptionPane.YES_NO_OPTION
+        ) == JOptionPane.YES_OPTION;
     }
 
 }
