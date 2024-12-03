@@ -22,6 +22,7 @@ public class Table extends JTable {
     public Table() {
         super(tableModel);
         getSelectionModel().addListSelectionListener(Controller.getInstance());
+        addKeyListener(Controller.getInstance());
     }
 
     public void update() {

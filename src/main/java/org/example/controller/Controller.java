@@ -4,6 +4,7 @@ import org.example.model.Model;
 import org.example.model.shape_factories.*;
 import org.example.model.shapes.Shape;
 import org.example.view.View;
+import org.example.view.table.Table;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -14,14 +15,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.example.model.shape_factories.ShapeType.*;
 
-public class Controller implements ActionListener, MouseListener, MouseMotionListener, ListSelectionListener {
+public class Controller implements ActionListener, MouseListener, MouseMotionListener, ListSelectionListener, KeyListener {
 
     private static Controller INSTANCE;
 
@@ -142,6 +143,43 @@ public class Controller implements ActionListener, MouseListener, MouseMotionLis
                 .toList();
 
         model.updateSelectedStatus(selectedIndexes);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource() instanceof Table table && e.getKeyCode() == KeyEvent.VK_DELETE) {
+            var selectedRows = IntStream.of(table.getSelectedRows())
+                    .boxed()
+                    .sorted(Comparator.reverseOrder())
+                    .toList();
+
+            if (!selectedRows.isEmpty()) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        table,
+                        "Удалить выбранные строки?",
+                        "Подтверждение",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    selectedRows.forEach(index -> {
+                        getShapes().remove(index.intValue());
+                    });
+
+                }
+            }
+
+        }
+
+        update();
     }
 
     public void update() {
