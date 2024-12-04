@@ -98,15 +98,15 @@ public class Controller {
     }
 
     public void handleMousePress(MouseEvent e) {
-        currentState.handleMousePress(e);
+        model.createShape(e.getPoint());
     }
 
     public void handleMouseRelease(MouseEvent e) {
-        currentState.handleMouseRelease(e);
+        model.setCurrentShapeAsCreated();
     }
 
     public void handleMouseDrag(MouseEvent e) {
-        currentState.handleMouseDrag(e);
+        model.updateCurrentShapeEndpoint(e.getPoint());
     }
 
 
