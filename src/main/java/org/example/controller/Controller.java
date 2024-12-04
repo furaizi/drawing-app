@@ -97,8 +97,8 @@ public class Controller {
         }
     }
 
-    public void handleMouseClick(MouseEvent e) {
-        currentState.handleMouseClick(e);
+    public void handleMousePress(MouseEvent e) {
+        currentState.handleMousePress(e);
     }
 
     public void handleMouseRelease(MouseEvent e) {

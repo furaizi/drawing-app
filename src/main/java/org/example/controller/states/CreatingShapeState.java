@@ -14,7 +14,7 @@ public class CreatingShapeState implements ShapeCreationState {
     }
 
     @Override
-    public void handleMouseClick(MouseEvent e) {}
+    public void handleMousePress(MouseEvent e) {}
 
     @Override
     public void handleMouseDrag(MouseEvent e) {

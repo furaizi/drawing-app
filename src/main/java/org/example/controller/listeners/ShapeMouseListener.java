@@ -8,8 +8,8 @@ import java.awt.event.MouseEvent;
 public class ShapeMouseListener extends MouseAdapter {
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        Controller.getInstance().handleMouseClick(e);
+    public void mousePressed(MouseEvent e) {
+        Controller.getInstance().handleMousePress(e);
     }
 
     @Override

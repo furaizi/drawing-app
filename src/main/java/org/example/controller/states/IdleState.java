@@ -14,7 +14,7 @@ public class IdleState implements ShapeCreationState {
     }
 
     @Override
-    public void handleMouseClick(MouseEvent e) {
+    public void handleMousePress(MouseEvent e) {
         model.createShape(e.getPoint());
         Controller.getInstance().setState(new CreatingShapeState(model));
     }
