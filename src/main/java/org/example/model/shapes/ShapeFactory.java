@@ -1,20 +1,33 @@
 package org.example.model.shapes;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiFunction;
+
+import static org.example.model.shapes.ShapeType.*;
 
 public class ShapeFactory {
 
-    public Shape create(ShapeType shapeType, Point startPoint, Point endPoint) {
-        Shape shape;
-        switch (shapeType) {
-            case POINT -> shape = new PointShape(startPoint, endPoint);
-            case LINE -> shape = new Line(startPoint, endPoint);
-            case RECTANGLE -> shape = new Rectangle(startPoint, endPoint);
-            case ELLIPSE -> shape = new Ellipse(startPoint, endPoint);
-            case LINEOO -> shape = new LineOO(startPoint, endPoint);
-            case CUBE -> shape = new Cube(startPoint, endPoint);
-            default -> shape = null;
-        }
-        return shape;
+    private final Map<ShapeType, BiFunction<Point, Point, Shape>> creators = new HashMap<>();
+
+    public ShapeFactory() {
+        register(POINT, PointShape::new);
+        register(LINE, Line::new);
+        register(RECTANGLE, Rectangle::new);
+        register(ELLIPSE, Ellipse::new);
+        register(CUBE, Cube::new);
+        register(LINEOO, LineOO::new);
+    }
+
+    public Shape create(ShapeType type, Point start, Point end) {
+        return Optional.ofNullable(creators.get(type))
+                .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"))
+                .apply(start, end);
+    }
+
+    private void register(ShapeType type, BiFunction<Point, Point, Shape> creator) {
+        creators.put(type, creator);
     }
 }
