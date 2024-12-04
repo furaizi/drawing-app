@@ -21,4 +21,9 @@ public class ObserversManager {
     public void notify(ModelEvents eventType) {
         notify(eventType, "");
     }
+
+
+    public enum ModelEvents {
+        SHAPES_LIST_CHANGED, CHOSEN_SHAPE_CHANGED
+    }
 }

@@ -1,7 +1,8 @@
 package org.example.controller;
 
-import org.example.controller.listeners.DeleteKeyListener;
-import org.example.controller.listeners.ShapeMouseListener;
+import org.example.controller.managers.FileManager;
+import org.example.controller.managers.ListenerManager;
+import org.example.controller.managers.SubscriberManager;
 import org.example.model.Model;
 import org.example.model.shapes.Shape;
 import org.example.model.shapes.ShapeType;
@@ -13,8 +14,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
-
-import static org.example.model.observer.ModelEvents.*;
 
 public class Controller {
 
@@ -34,32 +33,14 @@ public class Controller {
         return INSTANCE;
     }
 
+    public List<Shape> getShapes() {
+        return model.getShapes();
+    }
+
     public void setView(View view) {
         this.view = view;
-        addAllSubscribers();
-        addAllListeners();
-    }
-
-    private void addAllSubscribers() {
-        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, view);
-        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, view.getTable());
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view);
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view.getToolBar());
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view.getViewMenuBar().getObjectsMenu());
-    }
-
-    private void addAllListeners() {
-        var mouseListener = new ShapeMouseListener();
-
-        view.getViewMenuBar().getFileMenu().addActionListener(this::handleFileMenuAction);
-        view.getViewMenuBar().getObjectsMenu().addActionListener(this::handleObjectsMenuAction);
-        view.getToolBar().addActionListener(this::handleToolBarAction);
-
-        view.getPanel().addMouseListener(mouseListener);
-        view.getPanel().addMouseMotionListener(mouseListener);
-
-        view.getTable().addKeyListener(new DeleteKeyListener());
-        view.getTable().addTableSelectionListener(this::handleTableRowSelection);
+        SubscriberManager.addAllSubscribers(model, view);
+        ListenerManager.addAllListeners(this, view);
     }
 
     public void handleTableRowSelection(ListSelectionEvent e) {
@@ -111,7 +92,7 @@ public class Controller {
     }
 
     public void handleMouseClick(MouseEvent e) {
-        model.createShape(e.getPoint(), e.getPoint());
+        model.createShape(e.getPoint());
         model.setCurrentShapeAsCreated();
         shapeIsBeingCreated = false;
     }
@@ -129,7 +110,7 @@ public class Controller {
         if (shapeIsBeingCreated)
             model.updateCurrentShapeEndpoint(e.getPoint());
         else {
-            model.createShape(e.getPoint(), e.getPoint());
+            model.createShape(e.getPoint());
             shapeIsBeingCreated = true;
         }
     }
@@ -144,11 +125,6 @@ public class Controller {
 
         if (!selectedRows.isEmpty() && confirmDelete())
             selectedRows.forEach(model::removeShape);
-    }
-
-
-    public List<Shape> getShapes() {
-        return model.getShapes();
     }
 
     private void updateShapeType(String objectName) {

@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.managers;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

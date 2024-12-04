@@ -4,7 +4,7 @@ import org.example.model.observer.ObserversManager;
 import org.example.model.shapes.ShapeFactory;
 import org.example.model.shapes.ShapeType;
 import org.example.model.shapes.Shape;
-import static org.example.model.observer.ModelEvents.*;
+import static org.example.model.observer.ObserversManager.ModelEvents.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class Model {
     private Shape currentShape;
     private ShapeType currentShapeType;
 
-    public void createShape(Point startPoint, Point endPoint) {
-        currentShape = shapeFactory.create(currentShapeType, startPoint, endPoint);
+    public void createShape(Point point) {
+        currentShape = shapeFactory.create(currentShapeType, point, point);
         shapes.add(currentShape);
         observersManager.notify(SHAPES_LIST_CHANGED);
     }
