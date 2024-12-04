@@ -144,6 +144,7 @@ public class Controller implements ListSelectionListener {
         model.setCurrentShapeType(shapeType);
         view.setTitle(objectName);
         view.updateSelectedObject();
+        // реализовать обсервер
     }
 
     private boolean confirmDelete() {

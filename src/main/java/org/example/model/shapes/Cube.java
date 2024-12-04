@@ -1,12 +1,9 @@
 package org.example.model.shapes;
 
-import org.example.model.shapes.interfaces.ILine;
-import org.example.model.shapes.interfaces.IRectangle;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-public class Cube extends Shape implements IRectangle, ILine {
+public class Cube extends Shape {
 
     private int rectX, rectY, width, height, xShift, yShift;
 
@@ -16,24 +13,21 @@ public class Cube extends Shape implements IRectangle, ILine {
 
     @Override
     protected void draw(Graphics2D g2d) {
-        drawRect(g2d);
-        drawLine(g2d);
+        g2d.setColor(contourColor);
+        drawRectangles(g2d);
+        drawLines(g2d);
     }
 
-    @Override
-    public void drawLine(Graphics2D g2d) {
-        g2d.setColor(contourColor);
+    private void drawRectangles(Graphics2D g2d) {
+        g2d.draw(new Rectangle2D.Double(rectX, rectY, width, height));
+        g2d.draw(new Rectangle2D.Double(rectX + xShift, rectY - yShift, width, height));
+    }
+
+    private void drawLines(Graphics2D g2d) {
         g2d.drawLine(startPoint.x, startPoint.y, startPoint.x + xShift, startPoint.y - yShift);
         g2d.drawLine(startPoint.x, endPoint.y, startPoint.x + xShift, endPoint.y - yShift);
         g2d.drawLine(endPoint.x, endPoint.y, endPoint.x + xShift, endPoint.y - yShift);
         g2d.drawLine(endPoint.x, startPoint.y, endPoint.x + xShift, startPoint.y - yShift);
-    }
-
-    @Override
-    public void drawRect(Graphics2D g2d) {
-        g2d.setColor(contourColor);
-        g2d.draw(new Rectangle2D.Double(rectX, rectY, width, height));
-        g2d.draw(new Rectangle2D.Double(rectX + xShift, rectY - yShift, width, height));
     }
 
     @Override
@@ -47,4 +41,5 @@ public class Cube extends Shape implements IRectangle, ILine {
         xShift = (int) (width * 0.25);
         yShift = (int) (height * 0.25);
     }
+
 }

@@ -46,12 +46,13 @@ public abstract class Shape extends JComponent {
         contourColor = selected ? Color.RED : Color.BLACK;
     }
 
+    protected abstract void draw(Graphics2D g2d);
+    protected abstract void recalculate();
+
     protected void drawWithStroke(Graphics2D g2d) {
         setStroke(g2d);
         draw(g2d);
     }
-    protected abstract void draw(Graphics2D g2d);
-    protected abstract void recalculate();
 
     protected void setStroke(Graphics2D g2d) {
         float[] dashPattern = {10, 10};
