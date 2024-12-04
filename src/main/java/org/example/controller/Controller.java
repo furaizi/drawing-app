@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import static org.example.model.shape_factories.ShapeType.*;
 
-public class Controller implements ListSelectionListener {
+public class Controller {
 
     private static Controller INSTANCE;
 
@@ -49,8 +49,7 @@ public class Controller implements ListSelectionListener {
         this.view = view;
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
+    public void handleTableRowSelection(ListSelectionEvent e) {
         if (e.getValueIsAdjusting())
             return;
 

@@ -2,17 +2,17 @@ package org.example.view.table;
 
 import org.example.controller.Controller;
 import org.example.controller.listeners.DeleteKeyListener;
+import org.example.controller.listeners.TableSelectionListener;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import java.util.Arrays;
 import java.util.List;
 
 public class Table extends JTable {
 
     private static final String[] COLUMN_NAMES = {"Type", "x1", "y1", "x2", "y2"};
-    private List<Shape> shapes = Controller.getInstance().getShapes();
     private static DefaultTableModel tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -20,14 +20,17 @@ public class Table extends JTable {
         }
     };
 
+    private final List<Shape> shapes = Controller.getInstance().getShapes();
+    private final ListSelectionListener tableSelectionListener = new TableSelectionListener();
+
     public Table() {
         super(tableModel);
-        getSelectionModel().addListSelectionListener(Controller.getInstance());
+        getSelectionModel().addListSelectionListener(tableSelectionListener);
         addKeyListener(new DeleteKeyListener());
     }
 
     public void update() {
-        getSelectionModel().removeListSelectionListener(Controller.getInstance());
+        getSelectionModel().removeListSelectionListener(tableSelectionListener);
 
         int[] selectedRows = getSelectedRows();
 
@@ -41,7 +44,7 @@ public class Table extends JTable {
             }
         }
 
-        getSelectionModel().addListSelectionListener(Controller.getInstance());
+        getSelectionModel().addListSelectionListener(tableSelectionListener);
     }
 
 
