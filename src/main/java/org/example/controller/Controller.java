@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.model.Model;
+import org.example.model.ModelEvents;
 import org.example.model.shape_factories.*;
 import org.example.model.shapes.Shape;
 import org.example.view.View;
@@ -27,11 +28,13 @@ public class Controller implements ListSelectionListener {
     private static Controller INSTANCE;
 
     private View view;
-    private Model model = new Model();
+    private final Model model = new Model();
     private boolean shapeIsBeingCreated = false;
 
     private Controller() {
-        model.addObserver(this::update);
+        model.getObserversManager().subscribe(ModelEvents.SHAPES_LIST_CHANGED, this::update);
+        model.getObserversManager().subscribe(ModelEvents.CHOSEN_SHAPE_CHANGED, () -> view.setTitle(model.getCurrentShapeType().getName()));
+        model.getObserversManager().subscribe(ModelEvents.CHOSEN_SHAPE_CHANGED, () -> view.updateSelectedObject());
     }
 
     public static Controller getInstance() {
@@ -122,29 +125,25 @@ public class Controller implements ListSelectionListener {
                 .sorted(Comparator.reverseOrder())
                 .toList();
 
-        if (!selectedRows.isEmpty() && confirmDelete()) {
-            selectedRows.forEach(index -> model.getShapes().remove(index.intValue()));
-            update();
-        }
+        if (!selectedRows.isEmpty() && confirmDelete())
+            selectedRows.forEach(model::removeShape);
     }
 
-    public void update() {
-        view.revalidate();
-        view.repaint();
-        view.updateTable();
-    }
 
     public List<Shape> getShapes() {
         return model.getShapes();
+    }
+
+    private void update() {
+        view.revalidate();
+        view.repaint();
+        view.updateTable();
     }
 
     private void updateShapeType(String objectName) {
         var shapeType = ShapeType.fromName(objectName)
                 .orElseThrow(() -> new IllegalArgumentException("Unknown shape type"));
         model.setCurrentShapeType(shapeType);
-        view.setTitle(objectName);
-        view.updateSelectedObject();
-        // реализовать обсервер
     }
 
     private boolean confirmDelete() {
