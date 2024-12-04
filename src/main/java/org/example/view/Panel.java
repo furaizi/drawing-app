@@ -2,19 +2,17 @@ package org.example.view;
 
 import org.example.controller.Controller;
 import org.example.controller.listeners.ShapeMouseListener;
+import org.example.model.shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class Panel extends JPanel {
 
-    private View view;
 
-    public Panel(View view) {
+    public Panel() {
         super(new BorderLayout());
-        this.view = view;
-        addMouseListener(new ShapeMouseListener());
-        addMouseMotionListener(new ShapeMouseListener());
     }
 
     @Override

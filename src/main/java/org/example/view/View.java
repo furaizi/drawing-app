@@ -10,10 +10,10 @@ import java.awt.*;
 
 public class View extends JFrame {
 
-    private MenuBar menuBar = new MenuBar(this);
-    private Panel panel = new Panel(this);
-    private ToolBar toolBar = new ToolBar(this);
-    private TableDialog tableDialog = new TableDialog(this);
+    private final MenuBar menuBar = new MenuBar(this);
+    private final Panel panel = new Panel();
+    private final ToolBar toolBar = new ToolBar();
+    private final TableDialog tableDialog = new TableDialog(this);
 
     public View() throws HeadlessException {
         initGUI();
@@ -38,12 +38,20 @@ public class View extends JFrame {
         tableDialog.update();
     }
 
-    public void updateSelectedObject() {
-        menuBar.update(getTitle());
-        toolBar.update(getTitle());
-    }
-
     public Table getTable() {
         return tableDialog.getTable();
     }
+
+    public MenuBar getViewMenuBar() {
+        return menuBar;
+    }
+
+    public Panel getPanel() {
+        return panel;
+    }
+
+    public ToolBar getToolBar() {
+        return toolBar;
+    }
+
 }

@@ -1,21 +1,26 @@
 package org.example.view;
 
 import org.example.controller.Controller;
-import org.example.controller.listeners.ToolBarActionListener;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ToolBar extends JToolBar {
 
-    private View view;
-    private ButtonGroup buttonGroup = new ButtonGroup();
+    private final ButtonGroup buttonGroup = new ButtonGroup();
+    private final List<JToggleButton> buttons = new ArrayList<>();
 
-    public ToolBar(View view) {
-        this.view = view;
+    public ToolBar() {
         List<String> buttonNames = List.of("Point", "Line", "Rectangle", "Ellipse", "LineOO", "Cube");
         buttonNames.forEach(this::addButton);
+    }
+
+    public void addActionListener(ActionListener listener) {
+        buttons.forEach(button -> button.addActionListener(listener));
     }
 
     public void update(String objectName) {
@@ -37,9 +42,9 @@ public class ToolBar extends JToolBar {
 
         button.setToolTipText(name);
         button.setFocusPainted(false);
-        button.addActionListener(new ToolBarActionListener());
 
         buttonGroup.add(button);
+        buttons.add(button);
         add(button);
     }
 

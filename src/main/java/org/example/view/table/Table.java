@@ -2,7 +2,6 @@ package org.example.view.table;
 
 import org.example.controller.Controller;
 import org.example.controller.listeners.DeleteKeyListener;
-import org.example.controller.listeners.TableSelectionListener;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ import java.util.List;
 public class Table extends JTable {
 
     private static final String[] COLUMN_NAMES = {"Type", "x1", "y1", "x2", "y2"};
-    private static DefaultTableModel tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
+    private static final DefaultTableModel tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return column != 0;
@@ -21,12 +20,10 @@ public class Table extends JTable {
     };
 
     private final List<Shape> shapes = Controller.getInstance().getShapes();
-    private final ListSelectionListener tableSelectionListener = new TableSelectionListener();
+    private ListSelectionListener tableSelectionListener;
 
     public Table() {
         super(tableModel);
-        getSelectionModel().addListSelectionListener(tableSelectionListener);
-        addKeyListener(new DeleteKeyListener());
     }
 
     public void update() {
@@ -45,6 +42,11 @@ public class Table extends JTable {
         }
 
         getSelectionModel().addListSelectionListener(tableSelectionListener);
+    }
+
+    public void addTableSelectionListener(ListSelectionListener listener) {
+        this.tableSelectionListener = listener;
+        getSelectionModel().addListSelectionListener(listener);
     }
 
 

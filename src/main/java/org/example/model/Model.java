@@ -1,9 +1,10 @@
 package org.example.model;
 
-import org.example.model.shape_factories.ShapeFactory;
-import org.example.model.shape_factories.ShapeType;
+import org.example.model.observer.ObserversManager;
+import org.example.model.shapes.ShapeFactory;
+import org.example.model.shapes.ShapeType;
 import org.example.model.shapes.Shape;
-import static org.example.model.ModelEvents.*;
+import static org.example.model.observer.ModelEvents.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -46,9 +47,6 @@ public class Model {
         return shapes;
     }
 
-    public ShapeType getCurrentShapeType() {
-        return currentShapeType;
-    }
 
     public ObserversManager getObserversManager() {
         return observersManager;
@@ -62,7 +60,7 @@ public class Model {
 
     public void setCurrentShapeType(ShapeType currentShapeType) {
         this.currentShapeType = currentShapeType;
-        observersManager.notify(CHOSEN_SHAPE_CHANGED);
+        observersManager.notify(CHOSEN_SHAPE_CHANGED, currentShapeType.getName());
     }
 
     public void setCurrentShapeAsCreated() {

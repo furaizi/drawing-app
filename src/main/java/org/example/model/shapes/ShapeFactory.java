@@ -1,8 +1,4 @@
-package org.example.model.shape_factories;
-
-import org.example.model.shapes.*;
-import org.example.model.shapes.Rectangle;
-import org.example.model.shapes.Shape;
+package org.example.model.shapes;
 
 import java.awt.*;
 

@@ -8,6 +8,9 @@ public class HelpMenu extends JMenu {
     public HelpMenu() {
         setText("Help");
         List<String> buttonNames = List.of("Help 1", "Help 2", "Help 3");
-        buttonNames.forEach(name -> add(new JMenuItem(name)));
+
+        buttonNames.stream()
+                    .map(JMenuItem::new)
+                    .forEach(this::add);
     }
 }

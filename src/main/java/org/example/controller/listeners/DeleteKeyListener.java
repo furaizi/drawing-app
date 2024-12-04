@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class DeleteKeyListener implements KeyListener {
-    private final Controller controller = Controller.getInstance();
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -16,7 +15,7 @@ public class DeleteKeyListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DELETE)
-            controller.handleDeleteKey();
+            Controller.getInstance().handleDeleteKey();
     }
 
     @Override

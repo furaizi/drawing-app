@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +13,13 @@ public class ObserversManager {
                 .add(observer);
     }
 
+    public void notify(ModelEvents eventType, String data) {
+        observersMap.get(eventType)
+                .forEach(observer -> observer.modelUpdated(data));
+    }
+
     public void notify(ModelEvents eventType) {
         observersMap.get(eventType)
-                .forEach(ModelObserver::modelUpdated);
+                .forEach(observer -> observer.modelUpdated(""));
     }
 }

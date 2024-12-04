@@ -1,4 +1,4 @@
-package org.example.model.shape_factories;
+package org.example.model.shapes;
 
 import java.util.Optional;
 import java.util.stream.Stream;

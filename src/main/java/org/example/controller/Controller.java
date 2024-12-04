@@ -1,27 +1,20 @@
 package org.example.controller;
 
+import org.example.controller.listeners.DeleteKeyListener;
+import org.example.controller.listeners.ShapeMouseListener;
 import org.example.model.Model;
-import org.example.model.ModelEvents;
-import org.example.model.shape_factories.*;
 import org.example.model.shapes.Shape;
+import org.example.model.shapes.ShapeType;
 import org.example.view.View;
-import org.example.view.table.Table;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import static org.example.model.shape_factories.ShapeType.*;
+import static org.example.model.observer.ModelEvents.*;
 
 public class Controller {
 
@@ -32,9 +25,12 @@ public class Controller {
     private boolean shapeIsBeingCreated = false;
 
     private Controller() {
-        model.getObserversManager().subscribe(ModelEvents.SHAPES_LIST_CHANGED, this::update);
-        model.getObserversManager().subscribe(ModelEvents.CHOSEN_SHAPE_CHANGED, () -> view.setTitle(model.getCurrentShapeType().getName()));
-        model.getObserversManager().subscribe(ModelEvents.CHOSEN_SHAPE_CHANGED, () -> view.updateSelectedObject());
+        addAllSubscribers();
+    }
+
+    private void addAllSubscribers() {
+        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, data -> this.notifyShapesListChanged());
+        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, this::notifyChosenShapeChanged);
     }
 
     public static Controller getInstance() {
@@ -47,6 +43,21 @@ public class Controller {
 
     public void setView(View view) {
         this.view = view;
+        addAllListeners();
+    }
+
+    private void addAllListeners() {
+        var mouseListener = new ShapeMouseListener();
+
+        view.getViewMenuBar().getFileMenu().addActionListener(this::handleFileMenuAction);
+        view.getViewMenuBar().getObjectsMenu().addActionListener(this::handleObjectsMenuAction);
+        view.getToolBar().addActionListener(this::handleToolBarAction);
+
+        view.getPanel().addMouseListener(mouseListener);
+        view.getPanel().addMouseMotionListener(mouseListener);
+
+        view.getTable().addKeyListener(new DeleteKeyListener());
+        view.getTable().addTableSelectionListener(this::handleTableRowSelection);
     }
 
     public void handleTableRowSelection(ListSelectionEvent e) {
@@ -73,7 +84,12 @@ public class Controller {
         updateShapeType(objectName);
     }
 
-    public void handleSaveAsAction(ActionEvent e) {
+    public void handleFileMenuAction(ActionEvent e) {
+        if (e.getActionCommand().equals("Save As"))
+            handleSaveAsAction(e);
+    }
+
+    private void handleSaveAsAction(ActionEvent e) {
         var fileChooser = FileManager.getFileChooser();
         int userSelection = fileChooser.showSaveDialog(view);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -133,10 +149,16 @@ public class Controller {
         return model.getShapes();
     }
 
-    private void update() {
+    private void notifyShapesListChanged() {
         view.revalidate();
         view.repaint();
         view.updateTable();
+    }
+
+    private void notifyChosenShapeChanged(String objectName) {
+        view.setTitle(objectName);
+        view.getViewMenuBar().update(objectName);
+        view.getToolBar().update(objectName);
     }
 
     private void updateShapeType(String objectName) {

@@ -1,24 +1,28 @@
 package org.example.view.menu;
 
 import org.example.controller.Controller;
-import org.example.controller.listeners.ObjectsMenuActionListener;
 import org.example.view.View;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class ObjectsMenu extends JMenu {
 
-    private View view;
-    private ButtonGroup buttonGroup = new ButtonGroup();
+    private final ButtonGroup buttonGroup = new ButtonGroup();
+    private final List<JMenuItem> menuItems;
 
-    public ObjectsMenu(View view) {
-        this.view = view;
+    public ObjectsMenu() {
         setText("Objects");
         List<String> buttonNames = List.of("Point", "Line", "Rectangle", "Ellipse", "LineOO", "Cube");
-        buttonNames.forEach(this::addRadioButtonMenuItem);
+        this.menuItems = buttonNames.stream()
+                                    .map(JRadioButtonMenuItem::new)
+                                    .map(this::add)
+                                    .peek(buttonGroup::add)
+                                    .toList();
     }
 
     public void update(String objectName) {
@@ -30,11 +34,7 @@ public class ObjectsMenu extends JMenu {
                 .setSelected(true);
     }
 
-    private void addRadioButtonMenuItem(String name) {
-        var menuItem = new JRadioButtonMenuItem(name);
-        buttonGroup.add(menuItem);
-        add(menuItem);
-        menuItem.addActionListener(new ObjectsMenuActionListener());
+    public void addActionListener(ActionListener listener) {
+        menuItems.forEach(menuItem -> menuItem.addActionListener(listener));
     }
-
 }

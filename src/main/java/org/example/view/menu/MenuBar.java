@@ -8,13 +8,12 @@ import javax.swing.event.MenuListener;
 
 public class MenuBar extends JMenuBar {
 
-    private View view;
-    private ObjectsMenu objectsMenu;
+    private final FileMenu fileMenu = new FileMenu();
+    private final ObjectsMenu objectsMenu = new ObjectsMenu();
+    private final HelpMenu helpMenu = new HelpMenu();
+    private final JMenu showTableButton = new JMenu("Table");
 
     public MenuBar(View view) {
-        this.view = view;
-        this.objectsMenu = new ObjectsMenu(view);
-        var showTableButton = new JMenu("Table");
         showTableButton.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -32,10 +31,28 @@ public class MenuBar extends JMenuBar {
             }
         });
 
-        add(new FileMenu());
+        add(fileMenu);
         add(objectsMenu);
-        add(new HelpMenu());
+        add(helpMenu);
         add(showTableButton);
+    }
+
+
+    public FileMenu getFileMenu() {
+        return fileMenu;
+    }
+
+    public ObjectsMenu getObjectsMenu() {
+        return objectsMenu;
+    }
+
+    @Override
+    public HelpMenu getHelpMenu() {
+        return helpMenu;
+    }
+
+    public JMenu getShowTableButton() {
+        return showTableButton;
     }
 
     public void update(String objectName) {
