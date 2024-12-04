@@ -19,7 +19,6 @@ public class ObserversManager {
     }
 
     public void notify(ModelEvents eventType) {
-        observersMap.get(eventType)
-                .forEach(observer -> observer.modelUpdated(""));
+        notify(eventType, "");
     }
 }

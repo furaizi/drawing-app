@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.controller.Controller;
 import org.example.controller.listeners.ShapeMouseListener;
+import org.example.model.observer.ModelObserver;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;

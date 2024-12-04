@@ -1,7 +1,7 @@
 package org.example.view.table;
 
 import org.example.controller.Controller;
-import org.example.controller.listeners.DeleteKeyListener;
+import org.example.model.observer.ModelObserver;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;
@@ -9,7 +9,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-public class Table extends JTable {
+public class Table extends JTable implements ModelObserver {
 
     private static final String[] COLUMN_NAMES = {"Type", "x1", "y1", "x2", "y2"};
     private static final DefaultTableModel tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
@@ -26,13 +26,16 @@ public class Table extends JTable {
         super(tableModel);
     }
 
-    public void update() {
+    @Override
+    public void modelUpdated(String data) {
         getSelectionModel().removeListSelectionListener(tableSelectionListener);
 
         int[] selectedRows = getSelectedRows();
 
         tableModel.getDataVector().removeAllElements();
-        shapes.forEach(shape -> tableModel.addRow(convertToRow(shape)));
+        shapes.stream()
+                .map(this::convertToRow)
+                .forEach(tableModel::addRow);
 
         clearSelection();
         for (int rowIndex : selectedRows) {

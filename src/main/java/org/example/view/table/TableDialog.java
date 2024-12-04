@@ -18,10 +18,6 @@ public class TableDialog extends JDialog {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void update() {
-        table.update();
-    }
-
     public Table getTable() {
         return table;
     }

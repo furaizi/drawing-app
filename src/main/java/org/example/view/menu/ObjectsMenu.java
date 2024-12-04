@@ -1,16 +1,14 @@
 package org.example.view.menu;
 
-import org.example.controller.Controller;
-import org.example.view.View;
+import org.example.model.observer.ModelObserver;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class ObjectsMenu extends JMenu {
+public class ObjectsMenu extends JMenu implements ModelObserver {
 
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private final List<JMenuItem> menuItems;
@@ -25,7 +23,8 @@ public class ObjectsMenu extends JMenu {
                                     .toList();
     }
 
-    public void update(String objectName) {
+    @Override
+    public void modelUpdated(String objectName) {
         Arrays.stream(getMenuComponents())
                 .map(component -> (JRadioButtonMenuItem) component)
                 .filter(button -> button.getText().equals(objectName))

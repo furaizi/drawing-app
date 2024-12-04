@@ -1,15 +1,14 @@
 package org.example.view;
 
-import org.example.controller.Controller;
+import org.example.model.observer.ModelObserver;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-public class ToolBar extends JToolBar {
+public class ToolBar extends JToolBar implements ModelObserver {
 
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private final List<JToggleButton> buttons = new ArrayList<>();
@@ -23,7 +22,8 @@ public class ToolBar extends JToolBar {
         buttons.forEach(button -> button.addActionListener(listener));
     }
 
-    public void update(String objectName) {
+    @Override
+    public void modelUpdated(String objectName) {
         Arrays.stream(getComponents())
                 .map(component -> (JToggleButton) component)
                 .filter(button -> button.getToolTipText().equals(objectName))

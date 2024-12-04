@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.controller.Controller;
+import org.example.model.observer.ModelObserver;
 import org.example.view.menu.MenuBar;
 import org.example.view.table.Table;
 import org.example.view.table.TableDialog;
@@ -8,7 +9,7 @@ import org.example.view.table.TableDialog;
 import javax.swing.*;
 import java.awt.*;
 
-public class View extends JFrame {
+public class View extends JFrame implements ModelObserver {
 
     private final MenuBar menuBar = new MenuBar(this);
     private final Panel panel = new Panel();
@@ -34,8 +35,14 @@ public class View extends JFrame {
         tableDialog.setVisible(true);
     }
 
-    public void updateTable() {
-        tableDialog.update();
+    @Override
+    public void modelUpdated(String data) {
+        if (data.isEmpty()) {
+            repaint();
+            revalidate();
+        }
+        else
+            setTitle(data);
     }
 
     public Table getTable() {

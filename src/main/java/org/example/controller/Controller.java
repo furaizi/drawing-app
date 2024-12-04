@@ -25,25 +25,27 @@ public class Controller {
     private boolean shapeIsBeingCreated = false;
 
     private Controller() {
-        addAllSubscribers();
-    }
-
-    private void addAllSubscribers() {
-        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, data -> this.notifyShapesListChanged());
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, this::notifyChosenShapeChanged);
     }
 
     public static Controller getInstance() {
-        if (INSTANCE == null) {
+        if (INSTANCE == null)
             INSTANCE = new Controller();
-        }
 
         return INSTANCE;
     }
 
     public void setView(View view) {
         this.view = view;
+        addAllSubscribers();
         addAllListeners();
+    }
+
+    private void addAllSubscribers() {
+        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, view);
+        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, view.getTable());
+        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view);
+        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view.getToolBar());
+        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view.getViewMenuBar().getObjectsMenu());
     }
 
     private void addAllListeners() {
@@ -147,18 +149,6 @@ public class Controller {
 
     public List<Shape> getShapes() {
         return model.getShapes();
-    }
-
-    private void notifyShapesListChanged() {
-        view.revalidate();
-        view.repaint();
-        view.updateTable();
-    }
-
-    private void notifyChosenShapeChanged(String objectName) {
-        view.setTitle(objectName);
-        view.getViewMenuBar().update(objectName);
-        view.getToolBar().update(objectName);
     }
 
     private void updateShapeType(String objectName) {

@@ -21,14 +21,10 @@ public class MenuBar extends JMenuBar {
             }
 
             @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
+            public void menuDeselected(MenuEvent e) {}
 
             @Override
-            public void menuCanceled(MenuEvent e) {
-
-            }
+            public void menuCanceled(MenuEvent e) {}
         });
 
         add(fileMenu);
@@ -53,10 +49,6 @@ public class MenuBar extends JMenuBar {
 
     public JMenu getShowTableButton() {
         return showTableButton;
-    }
-
-    public void update(String objectName) {
-        objectsMenu.update(objectName);
     }
 
 }
