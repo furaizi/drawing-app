@@ -3,6 +3,8 @@ package org.example.controller;
 import org.example.controller.managers.FileManager;
 import org.example.controller.managers.ListenerManager;
 import org.example.controller.managers.SubscriberManager;
+import org.example.controller.states.IdleState;
+import org.example.controller.states.ShapeCreationState;
 import org.example.model.Model;
 import org.example.model.shapes.Shape;
 import org.example.model.shapes.ShapeType;
@@ -21,7 +23,7 @@ public class Controller {
 
     private View view;
     private final Model model = new Model();
-    private boolean shapeIsBeingCreated = false;
+    private ShapeCreationState currentState = new IdleState(model);
 
     private Controller() {
     }
@@ -41,6 +43,10 @@ public class Controller {
         this.view = view;
         SubscriberManager.addAllSubscribers(model, view);
         ListenerManager.addAllListeners(this, view);
+    }
+
+    public void setState(ShapeCreationState state) {
+        this.currentState = state;
     }
 
     public void handleTableRowSelection(ListSelectionEvent e) {
@@ -92,27 +98,15 @@ public class Controller {
     }
 
     public void handleMouseClick(MouseEvent e) {
-        model.createShape(e.getPoint());
-        model.setCurrentShapeAsCreated();
-        shapeIsBeingCreated = false;
+        currentState.handleMouseClick(e);
     }
 
     public void handleMouseRelease(MouseEvent e) {
-        if (!shapeIsBeingCreated)
-            return;
-
-        model.updateCurrentShapeEndpoint(e.getPoint());
-        model.setCurrentShapeAsCreated();
-        shapeIsBeingCreated = false;
+        currentState.handleMouseRelease(e);
     }
 
     public void handleMouseDrag(MouseEvent e) {
-        if (shapeIsBeingCreated)
-            model.updateCurrentShapeEndpoint(e.getPoint());
-        else {
-            model.createShape(e.getPoint());
-            shapeIsBeingCreated = true;
-        }
+        currentState.handleMouseDrag(e);
     }
 
 

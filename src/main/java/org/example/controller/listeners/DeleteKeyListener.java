@@ -8,9 +8,7 @@ import java.awt.event.KeyListener;
 public class DeleteKeyListener implements KeyListener {
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -19,7 +17,5 @@ public class DeleteKeyListener implements KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
 }
