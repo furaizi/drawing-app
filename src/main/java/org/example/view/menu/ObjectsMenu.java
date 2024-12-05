@@ -1,6 +1,7 @@
 package org.example.view.menu;
 
 import org.example.model.observer.ModelObserver;
+import org.example.model.shapes.Shape;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -31,6 +32,10 @@ public class ObjectsMenu extends JMenu implements ModelObserver {
                 .findAny()
                 .orElseThrow(() -> new RuntimeException(objectName))
                 .setSelected(true);
+    }
+
+    @Override
+    public void modelUpdated(List<Shape> shapes) {
     }
 
     public void addActionListener(ActionListener listener) {

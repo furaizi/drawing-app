@@ -1,6 +1,5 @@
 package org.example.view.table;
 
-import org.example.controller.Controller;
 import org.example.model.observer.ModelObserver;
 import org.example.model.shapes.Shape;
 
@@ -28,12 +27,16 @@ public class Table extends JTable implements ModelObserver {
 
     @Override
     public void modelUpdated(String data) {
+    }
+
+    @Override
+    public void modelUpdated(List<Shape> shapes) {
         getSelectionModel().removeListSelectionListener(tableSelectionListener);
 
         int[] selectedRows = getSelectedRows();
 
         getDataVector().removeAllElements();
-        getShapes().stream()
+        shapes.stream()
                 .map(this::convertToRow)
                 .forEach(tableModel::addRow);
 
@@ -61,10 +64,6 @@ public class Table extends JTable implements ModelObserver {
         var y2 = String.valueOf(shape.getEndPoint().y);
 
         return new String[]{shapeType, x1, y1, x2, y2};
-    }
-
-    private List<Shape> getShapes() {
-        return Controller.getInstance().getShapes();
     }
 
     private Vector<Vector> getDataVector() {

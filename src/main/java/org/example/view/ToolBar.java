@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.model.observer.ModelObserver;
+import org.example.model.shapes.Shape;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -30,6 +31,10 @@ public class ToolBar extends JToolBar implements ModelObserver {
                 .findAny()
                 .orElseThrow()
                 .setSelected(true);
+    }
+
+    @Override
+    public void modelUpdated(List<Shape> shapes) {
     }
 
     private void addButton(String name) {

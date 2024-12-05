@@ -1,5 +1,7 @@
 package org.example.model.observer;
 
+import org.example.model.shapes.Shape;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,11 @@ public class ObserversManager {
     public void notify(ModelEvents eventType, String data) {
         observersMap.get(eventType)
                 .forEach(observer -> observer.modelUpdated(data));
+    }
+
+    public void notify(ModelEvents eventType, List<Shape> shapes) {
+        observersMap.get(eventType)
+                .forEach(observer -> observer.modelUpdated(shapes));
     }
 
     public void notify(ModelEvents eventType) {

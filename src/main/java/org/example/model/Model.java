@@ -24,24 +24,24 @@ public class Model {
     public void createShape(Point point) {
         currentShape = shapeFactory.create(currentShapeType, point, point);
         shapes.add(currentShape);
-        observersManager.notify(SHAPES_LIST_CHANGED);
+        observersManager.notify(SHAPES_LIST_CHANGED, shapes);
     }
 
     public void removeShape(int index) {
         shapes.remove(index);
-        observersManager.notify(SHAPES_LIST_CHANGED);
+        observersManager.notify(SHAPES_LIST_CHANGED, shapes);
     }
 
     public void updateCurrentShapeEndpoint(Point endPoint) {
         currentShape.setEndPoint(endPoint);
-        observersManager.notify(SHAPES_LIST_CHANGED);
+        observersManager.notify(SHAPES_LIST_CHANGED, shapes);
     }
 
     public void updateSelectedStatus(List<Integer> selectedIndexes) {
         IntStream.range(0, shapes.size()).forEach(i ->
                 shapes.get(i).setSelected(selectedIndexes.contains(i))
         );
-        observersManager.notify(SHAPES_LIST_CHANGED);
+        observersManager.notify(SHAPES_LIST_CHANGED, shapes);
     }
 
     public List<Shape> getShapes() {
@@ -51,7 +51,7 @@ public class Model {
     public void loadShapes(List<Shape> shapes) {
         this.shapes = shapes;
         shapes.forEach(shape -> shape.setBeingCreated(false));
-        observersManager.notify(SHAPES_LIST_CHANGED);
+        observersManager.notify(SHAPES_LIST_CHANGED, shapes);
     }
 
     public void subscribe(ObserversManager.ModelEvents eventType, ModelObserver observer) {
@@ -71,7 +71,7 @@ public class Model {
 
     public void setCurrentShapeAsCreated() {
         currentShape.setBeingCreated(false);
-        observersManager.notify(SHAPES_LIST_CHANGED);
+        observersManager.notify(SHAPES_LIST_CHANGED, shapes);
     }
 
 }

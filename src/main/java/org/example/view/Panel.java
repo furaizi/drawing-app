@@ -1,27 +1,26 @@
 package org.example.view;
 
-import org.example.controller.Controller;
-import org.example.controller.listeners.ShapeMouseListener;
-import org.example.model.observer.ModelObserver;
 import org.example.model.shapes.Shape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Panel extends JPanel {
 
 
+    private List<Shape> shapes = new ArrayList<>();
     public Panel() {
         super(new BorderLayout());
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        getShapes().forEach(shape -> shape.paintComponent(g));
+    public void setShapes(List<Shape> shapes) {
+        this.shapes = shapes;
     }
 
-    private List<Shape> getShapes() {
-        return Controller.getInstance().getShapes();
+    @Override
+    protected void paintComponent(Graphics g) {
+        shapes.forEach(shape -> shape.paintComponent(g));
     }
 }

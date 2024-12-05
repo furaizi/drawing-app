@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.controller.Controller;
 import org.example.model.observer.ModelObserver;
+import org.example.model.shapes.Shape;
 import org.example.view.menu.FileMenu;
 import org.example.view.menu.HelpMenu;
 import org.example.view.menu.MenuBar;
@@ -11,6 +12,7 @@ import org.example.view.table.TableDialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class View extends JFrame implements ModelObserver {
 
@@ -40,12 +42,14 @@ public class View extends JFrame implements ModelObserver {
 
     @Override
     public void modelUpdated(String data) {
-        if (data.isEmpty()) {
-            repaint();
-            revalidate();
-        }
-        else
-            setTitle(data);
+        setTitle(data);
+    }
+
+    @Override
+    public void modelUpdated(List<Shape> shapes) {
+        panel.setShapes(shapes);
+        repaint();
+        revalidate();
     }
 
     public TableDialog getTableDialog() {
