@@ -10,7 +10,7 @@ public class FileMenu extends JMenu {
 
     public FileMenu() {
         setText("File");
-        List<String> buttonNames = List.of("New", "Open", "Save As", "Print", "Exit");
+        List<String> buttonNames = List.of("New", "Open", "Save As TXT", "Save As PNG", "Print", "Exit");
         this.menuItems = buttonNames.stream()
                                 .map(JMenuItem::new)
                                 .map(this::add)

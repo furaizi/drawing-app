@@ -48,6 +48,10 @@ public class View extends JFrame implements ModelObserver {
             setTitle(data);
     }
 
+    public TableDialog getTableDialog() {
+        return tableDialog;
+    }
+
     public Table getTable() {
         return tableDialog.getTable();
     }

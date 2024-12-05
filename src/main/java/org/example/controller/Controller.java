@@ -11,8 +11,10 @@ import org.example.view.View;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
 public class Controller {
@@ -67,47 +69,36 @@ public class Controller {
     }
 
     public void handleFileMenuAction(ActionEvent e) {
-        if (e.getActionCommand().equals("Save As"))
-            handleSaveAsAction(e);
-        else if (e.getActionCommand().equals("Open"))
-            handleOpenAction(e);
-    }
-
-    private void handleSaveAsAction(ActionEvent e) {
-        var fileChooser = FileManager.getFileChooser();
-        var userSelection = fileChooser.showSaveDialog(view);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            try {
-                FileManager.saveToFile(model.getStringRepresentation(), fileChooser.getSelectedFile());
-                JOptionPane.showMessageDialog(view,
-                        "The file was saved successfully",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(view,
-                        "Error while saving the file: " + ex.getMessage(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
+        var action = e.getActionCommand();
+        switch (action) {
+            case "Open" -> handleOpenAction();
+            case "Save As TXT" -> handleSaveAsAction(FileManager.getTXTFileChooser(), FileManager::saveToTXTFile);
+            case "Save As PNG" -> handleSaveAsAction(FileManager.getPNGFileChooser(), FileManager::saveToPNGFile);
         }
     }
 
-    private void handleOpenAction(ActionEvent e) {
-        var fileChooser = FileManager.getFileChooser();
+    private void handleOpenAction() {
+        var fileChooser = FileManager.getTXTFileChooser();
         var userSelection = fileChooser.showOpenDialog(view);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             try {
                 var shapes = FileManager.readFile(fileChooser.getSelectedFile());
-                JOptionPane.showMessageDialog(view,
-                        "The file was opened successfully",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
+                showSuccessMessageDialog("The file was opened successfully");
                 model.loadShapes(shapes);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(view,
-                        "Error while opening the file: " + ex.getMessage(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                showErrorMessageDialog("Error while opening the file: " + ex.getMessage());
+            }
+        }
+    }
+
+    private void handleSaveAsAction(JFileChooser fileChooser, BiErrorConsumer<Model, File> saveFunction) {
+        var userSelection = fileChooser.showSaveDialog(view);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try {
+                saveFunction.accept(model, fileChooser.getSelectedFile());
+                showSuccessMessageDialog("The file was saved successfully");
+            } catch (IOException ex) {
+                showErrorMessageDialog("Error while saving the file: " + ex.getMessage());
             }
         }
     }
@@ -149,6 +140,20 @@ public class Controller {
                 "Confirmation",
                 JOptionPane.YES_NO_OPTION
         ) == JOptionPane.YES_OPTION;
+    }
+
+    private void showSuccessMessageDialog(String message) {
+        JOptionPane.showMessageDialog(view,
+                message,
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showErrorMessageDialog(String message) {
+        JOptionPane.showMessageDialog(view,
+                message,
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 
 }

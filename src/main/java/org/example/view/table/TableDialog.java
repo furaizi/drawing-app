@@ -4,6 +4,8 @@ import org.example.view.View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TableDialog extends JDialog {
     private final Table table = new Table();

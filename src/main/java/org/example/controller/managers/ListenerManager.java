@@ -3,6 +3,7 @@ package org.example.controller.managers;
 import org.example.controller.Controller;
 import org.example.controller.listeners.DeleteKeyListener;
 import org.example.controller.listeners.ShapeMouseListener;
+import org.example.controller.listeners.TableDialogWindowListener;
 import org.example.view.View;
 
 public class ListenerManager {
@@ -17,6 +18,7 @@ public class ListenerManager {
         view.getPanel().addMouseListener(mouseListener);
         view.getPanel().addMouseMotionListener(mouseListener);
 
+        view.getTableDialog().addWindowListener(new TableDialogWindowListener());
         view.getTable().addKeyListener(new DeleteKeyListener());
         view.getTable().addTableSelectionListener(controller::handleTableRowSelection);
     }
