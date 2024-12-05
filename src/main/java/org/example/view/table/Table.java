@@ -19,7 +19,6 @@ public class Table extends JTable implements ModelObserver {
         }
     };
 
-    private final List<Shape> shapes = Controller.getInstance().getShapes();
     private ListSelectionListener tableSelectionListener;
 
     public Table() {
@@ -33,6 +32,7 @@ public class Table extends JTable implements ModelObserver {
         int[] selectedRows = getSelectedRows();
 
         tableModel.getDataVector().removeAllElements();
+        var shapes = Controller.getInstance().getShapes();
         shapes.stream()
                 .map(this::convertToRow)
                 .forEach(tableModel::addRow);

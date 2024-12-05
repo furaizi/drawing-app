@@ -16,6 +16,9 @@ public enum ShapeType {
     }
 
     public static Optional<ShapeType> fromName(String name) {
+        if (name.equals("PointShape"))
+            return Optional.of(POINT);
+
         return Stream.of(values())
                 .filter(type -> type.name.equals(name))
                 .findFirst();

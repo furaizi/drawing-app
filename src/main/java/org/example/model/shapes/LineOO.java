@@ -16,7 +16,7 @@ public class LineOO extends Shape {
     @Override
     protected void draw(Graphics2D g2d) {
         g2d.setColor(contourColor);
-        drawLines(g2d);
+        drawLine(g2d);
         drawEllipses(g2d);
     }
 
@@ -34,7 +34,7 @@ public class LineOO extends Shape {
 
     }
 
-    private void drawLines(Graphics2D g2d) {
+    private void drawLine(Graphics2D g2d) {
         g2d.draw(new Line2D.Double(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
     }
 }

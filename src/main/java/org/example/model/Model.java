@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 public class Model {
 
     private final ObserversManager observersManager = new ObserversManager();
-    private final List<Shape> shapes = new ArrayList<>();
+    private List<Shape> shapes = new ArrayList<>();
     private final ShapeFactory shapeFactory = new ShapeFactory();
     private Shape currentShape;
     private ShapeType currentShapeType;
@@ -47,6 +47,11 @@ public class Model {
         return shapes;
     }
 
+    public void loadShapes(List<Shape> shapes) {
+        this.shapes = shapes;
+        shapes.forEach(shape -> shape.setBeingCreated(false));
+        observersManager.notify(SHAPES_LIST_CHANGED);
+    }
 
     public ObserversManager getObserversManager() {
         return observersManager;

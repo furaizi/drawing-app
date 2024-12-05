@@ -9,6 +9,7 @@ public class Cube extends Shape {
 
     public Cube(Point startPoint, Point endPoint) {
         super(startPoint, endPoint);
+        recalculate();
     }
 
     @Override

@@ -3,8 +3,6 @@ package org.example.controller;
 import org.example.controller.managers.FileManager;
 import org.example.controller.managers.ListenerManager;
 import org.example.controller.managers.SubscriberManager;
-import org.example.controller.states.IdleState;
-import org.example.controller.states.ShapeCreationState;
 import org.example.model.Model;
 import org.example.model.shapes.Shape;
 import org.example.model.shapes.ShapeType;
@@ -23,7 +21,6 @@ public class Controller {
 
     private View view;
     private final Model model = new Model();
-    private ShapeCreationState currentState = new IdleState(model);
 
     private Controller() {
     }
@@ -43,10 +40,6 @@ public class Controller {
         this.view = view;
         SubscriberManager.addAllSubscribers(model, view);
         ListenerManager.addAllListeners(this, view);
-    }
-
-    public void setState(ShapeCreationState state) {
-        this.currentState = state;
     }
 
     public void handleTableRowSelection(ListSelectionEvent e) {
@@ -76,11 +69,13 @@ public class Controller {
     public void handleFileMenuAction(ActionEvent e) {
         if (e.getActionCommand().equals("Save As"))
             handleSaveAsAction(e);
+        else if (e.getActionCommand().equals("Open"))
+            handleOpenAction(e);
     }
 
     private void handleSaveAsAction(ActionEvent e) {
         var fileChooser = FileManager.getFileChooser();
-        int userSelection = fileChooser.showSaveDialog(view);
+        var userSelection = fileChooser.showSaveDialog(view);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             try {
                 FileManager.saveToFile(model.getStringRepresentation(), fileChooser.getSelectedFile());
@@ -91,6 +86,26 @@ public class Controller {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(view,
                         "Error while saving the file: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void handleOpenAction(ActionEvent e) {
+        var fileChooser = FileManager.getFileChooser();
+        var userSelection = fileChooser.showOpenDialog(view);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try {
+                var shapes = FileManager.readFile(fileChooser.getSelectedFile());
+                JOptionPane.showMessageDialog(view,
+                        "The file was opened successfully",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+                model.loadShapes(shapes);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(view,
+                        "Error while opening the file: " + ex.getMessage(),
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
