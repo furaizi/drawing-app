@@ -18,8 +18,10 @@ public class Panel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        Controller.getInstance()
-                .getShapes()
-                .forEach(shape -> shape.paintComponent(g));
+        getShapes().forEach(shape -> shape.paintComponent(g));
+    }
+
+    private List<Shape> getShapes() {
+        return Controller.getInstance().getShapes();
     }
 }

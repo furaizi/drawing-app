@@ -8,10 +8,10 @@ import static org.example.model.observer.ObserversManager.ModelEvents.*;
 public class SubscriberManager {
 
     public static void addAllSubscribers(Model model, View view) {
-        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, view);
-        model.getObserversManager().subscribe(SHAPES_LIST_CHANGED, view.getTable());
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view);
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view.getToolBar());
-        model.getObserversManager().subscribe(CHOSEN_SHAPE_CHANGED, view.getViewMenuBar().getObjectsMenu());
+        model.subscribe(SHAPES_LIST_CHANGED, view);
+        model.subscribe(SHAPES_LIST_CHANGED, view.getTable());
+        model.subscribe(CHOSEN_SHAPE_CHANGED, view);
+        model.subscribe(CHOSEN_SHAPE_CHANGED, view.getToolBar());
+        model.subscribe(CHOSEN_SHAPE_CHANGED, view.getObjectsMenu());
     }
 }

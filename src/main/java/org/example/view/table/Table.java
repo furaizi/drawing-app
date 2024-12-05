@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Vector;
 
 public class Table extends JTable implements ModelObserver {
 
@@ -31,9 +32,8 @@ public class Table extends JTable implements ModelObserver {
 
         int[] selectedRows = getSelectedRows();
 
-        tableModel.getDataVector().removeAllElements();
-        var shapes = Controller.getInstance().getShapes();
-        shapes.stream()
+        getDataVector().removeAllElements();
+        getShapes().stream()
                 .map(this::convertToRow)
                 .forEach(tableModel::addRow);
 
@@ -61,6 +61,14 @@ public class Table extends JTable implements ModelObserver {
         var y2 = String.valueOf(shape.getEndPoint().y);
 
         return new String[]{shapeType, x1, y1, x2, y2};
+    }
+
+    private List<Shape> getShapes() {
+        return Controller.getInstance().getShapes();
+    }
+
+    private Vector<Vector> getDataVector() {
+        return tableModel.getDataVector();
     }
 
 }

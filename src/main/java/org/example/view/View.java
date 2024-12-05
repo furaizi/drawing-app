@@ -2,7 +2,10 @@ package org.example.view;
 
 import org.example.controller.Controller;
 import org.example.model.observer.ModelObserver;
+import org.example.view.menu.FileMenu;
+import org.example.view.menu.HelpMenu;
 import org.example.view.menu.MenuBar;
+import org.example.view.menu.ObjectsMenu;
 import org.example.view.table.Table;
 import org.example.view.table.TableDialog;
 
@@ -61,4 +64,15 @@ public class View extends JFrame implements ModelObserver {
         return toolBar;
     }
 
+    public FileMenu getFileMenu() {
+        return menuBar.getFileMenu();
+    }
+
+    public ObjectsMenu getObjectsMenu() {
+        return menuBar.getObjectsMenu();
+    }
+
+    public HelpMenu getHelpMenu() {
+        return menuBar.getHelpMenu();
+    }
 }

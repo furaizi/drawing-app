@@ -1,5 +1,6 @@
 package org.example.model;
 
+import org.example.model.observer.ModelObserver;
 import org.example.model.observer.ObserversManager;
 import org.example.model.shapes.ShapeFactory;
 import org.example.model.shapes.ShapeType;
@@ -53,8 +54,8 @@ public class Model {
         observersManager.notify(SHAPES_LIST_CHANGED);
     }
 
-    public ObserversManager getObserversManager() {
-        return observersManager;
+    public void subscribe(ObserversManager.ModelEvents eventType, ModelObserver observer) {
+        observersManager.subscribe(eventType, observer);
     }
 
     public String getStringRepresentation() {

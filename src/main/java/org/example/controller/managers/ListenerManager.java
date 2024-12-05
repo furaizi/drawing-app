@@ -10,8 +10,8 @@ public class ListenerManager {
     public static void addAllListeners(Controller controller, View view) {
         var mouseListener = new ShapeMouseListener();
 
-        view.getViewMenuBar().getFileMenu().addActionListener(controller::handleFileMenuAction);
-        view.getViewMenuBar().getObjectsMenu().addActionListener(controller::handleObjectsMenuAction);
+        view.getFileMenu().addActionListener(controller::handleFileMenuAction);
+        view.getObjectsMenu().addActionListener(controller::handleObjectsMenuAction);
         view.getToolBar().addActionListener(controller::handleToolBarAction);
 
         view.getPanel().addMouseListener(mouseListener);
